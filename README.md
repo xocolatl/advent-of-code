@@ -13,4 +13,4 @@ If you would like to run these yourself, save your input to a file called
 blank lines at the end) and run `psql -f script.sql`.
 
 * http://adventofcode.com/2017 :christmas_tree:
-* <https://www.postgresql.org/> :elephant:
+* https://www.postgresql.org/ :elephant:
