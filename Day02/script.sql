@@ -4,7 +4,7 @@ CREATE TABLE day02 (input text);
 \COPY day02 FROM 'input.txt' (DELIMITER ';')
 
 /* It would be really nice if greatest() and least() were variadic functions instead of baked into the grammar */
-SELECT sum((SELECT max(x::integer) FROM unnest(a) AS u(x)) - (SELECT min(x::integer) FROM unnest(a) AS u(x))) AS first_star
+SELECT sum((SELECT max(x::integer) - min(x::integer) FROM unnest(a) AS u(x))) AS first_star
 FROM day02 AS d,
      string_to_array(input, chr(9)) AS a;
 
