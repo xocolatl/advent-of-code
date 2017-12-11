@@ -1,4 +1,3 @@
-DROP TABLE day10;
 CREATE TABLE day10 (rownum serial, input text);
 
 \COPY day10 (input) FROM 'input.txt'
