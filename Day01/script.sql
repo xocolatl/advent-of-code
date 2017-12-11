@@ -1,6 +1,6 @@
-CREATE TABLE day01 (input text);
+CREATE TABLE day01 (rownum serial, input text);
 
-\COPY day01 FROM 'input.txt'
+\COPY day01 (input) FROM 'input.txt'
 
 SELECT coalesce(sum(digit::integer) FILTER (WHERE digit = next_digit), 0) AS first_star
 FROM (

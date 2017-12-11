@@ -1,6 +1,6 @@
-CREATE TABLE day07 (input text);
+CREATE TABLE day07 (rownum serial, input text);
 
-\COPY day07 FROM 'input.txt'
+\COPY day07 (input) FROM 'input.txt'
 
 WITH
 input (name, weight, supporting) AS (

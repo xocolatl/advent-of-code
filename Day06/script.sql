@@ -1,7 +1,7 @@
-CREATE TABLE day06 (input text);
+CREATE TABLE day06 (rownum serial, input text);
 
 /* The delimiter is just something other than TAB */
-\COPY day06 FROM 'input.txt' (DELIMITER ';')
+\COPY day06 (input) FROM 'input.txt' (DELIMITER ';')
 
 /*
  * PostgreSQL is not very good at arrays of arrays, so `seen` tracks the

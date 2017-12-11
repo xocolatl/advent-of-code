@@ -1,12 +1,12 @@
-CREATE TABLE day05 (input text);
+CREATE TABLE day05 (rownum serial, input text);
 
-\COPY day05 FROM 'input.txt'
+\COPY day05 (input) FROM 'input.txt'
 
 /* You might want to set work_mem to something quite large */
 
 WITH RECURSIVE
 trampolines (jumps, steps, ip) AS (
-    SELECT array_agg(input::integer ORDER BY ctid), 0, 1
+    SELECT array_agg(input::integer ORDER BY rownum), 0, 1
     FROM day05
     UNION ALL
     SELECT jumps[:ip-1] || (jumps[ip] + 1) || jumps[ip+1:],
@@ -34,7 +34,7 @@ LIMIT 1;
 
 -- WITH RECURSIVE
 -- trampolines (jumps, steps, ip) AS (
---     SELECT array_agg(input::integer ORDER BY ctid), 0, 1
+--     SELECT array_agg(input::integer ORDER BY rownum), 0, 1
 --     FROM day05
 --     UNION ALL
 --     SELECT jumps[:ip-1] || (jumps[ip] + CASE WHEN jumps[ip] >= 3 THEN -1 ELSE 1 END) || jumps[ip+1:],

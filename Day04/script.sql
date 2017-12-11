@@ -1,6 +1,6 @@
-CREATE TABLE day04 (input text);
+CREATE TABLE day04 (rownum serial, input text);
 
-\COPY day04 FROM 'input.txt'
+\COPY day04 (input) FROM 'input.txt'
 
 /* Let's abuse the system a little bit, just for quick n' dirty fun */
 SELECT count(*) AS first_star

@@ -1,7 +1,7 @@
-CREATE TABLE day02 (input text);
+CREATE TABLE day02 (rownum serial, input text);
 
 /* The delimiter is just something other than TAB */
-\COPY day02 FROM 'input.txt' (DELIMITER ';')
+\COPY day02 (input) FROM 'input.txt' (DELIMITER ';')
 
 /* It would be really nice if greatest() and least() were variadic functions instead of baked into the grammar */
 SELECT sum((SELECT max(x::integer) - min(x::integer) FROM unnest(a) AS u(x))) AS first_star

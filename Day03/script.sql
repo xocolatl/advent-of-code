@@ -1,6 +1,6 @@
-CREATE TABLE day03 (input text);
+CREATE TABLE day03 (rownum serial, input text);
 
-\COPY day03 FROM 'input.txt';
+\COPY day03 (input) FROM 'input.txt'
 
 /*
  * This doesn't really have anything to do with SQL, it's just some math.  I
