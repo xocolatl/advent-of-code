@@ -17,24 +17,11 @@ input AS (
     FROM day08 AS d,
          regexp_match(d.input, '^(\w+) (\w+) (-?\d+) if (\w+) ([!=<>]+) (-?\d+)$') AS match
 ),
-
-loop (rownum, register, op, diff, if_register, if_op, if_value, memory) AS (
-    SELECT 0,
-           null::text,
-           null::integer,
-           null::integer,
-           null::text,
-           null::text,
-           null::integer,
-           jsonb '{}'
+loop AS (
+    SELECT 0 AS rownum,
+           jsonb '{}' AS memory
     UNION ALL
     SELECT i.rownum,
-           i.register,
-           i.sign,
-           i.diff,
-           i.if_register,
-           i.if_op,
-           i.if_value,
            l.memory || jsonb_build_object(i.register,
                coalesce((l.memory->>i.register)::integer, 0) + i.sign * coalesce(CASE
                    WHEN i.if_op = '<=' AND coalesce((l.memory->>i.if_register)::integer, 0) <= i.if_value THEN i.diff
@@ -47,7 +34,6 @@ loop (rownum, register, op, diff, if_register, if_op, if_value, memory) AS (
     FROM loop AS l
     JOIN input AS i on i.rownum = l.rownum+1
 )
-
 SELECT first_value(max_value) OVER (ORDER BY rownum DESC) AS first_star,
        max(max_value) over () AS second_star
 FROM (
