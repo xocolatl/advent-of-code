@@ -29,7 +29,8 @@ LIMIT 1;
  * wait that long.
  *
  * So while I have successfully completed the challenge, I am currently unable
- * to obtain the answer to validate my work on the website. :(
+ * to obtain the answer to validate my work on the website so I had to write a
+ * version in plpgsql. :(
  */
 
 -- WITH RECURSIVE
@@ -48,4 +49,36 @@ LIMIT 1;
 -- ORDER BY steps DESC
 -- LIMIT 1;
 
+CREATE OR REPLACE FUNCTION second_star()
+ RETURNS integer
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+    l_ip integer;
+    l_new_ip integer;
+    l_steps integer;
+    l_trampolines integer[];
+BEGIN
+    l_ip := 1;
+    l_steps := 0;
+    l_trampolines := ARRAY(SELECT input::integer FROM day05 ORDER BY rownum);
+
+    WHILE l_trampolines[l_ip] IS NOT NULL LOOP
+        l_new_ip := l_ip + l_trampolines[l_ip];
+        IF l_trampolines[l_ip] >= 3 THEN
+            l_trampolines[l_ip] := l_trampolines[l_ip] - 1;
+        ELSE
+            l_trampolines[l_ip] := l_trampolines[l_ip] + 1;
+        END IF;
+        l_steps := l_steps + 1;
+        l_ip := l_new_ip;
+    END LOOP;
+
+    RETURN l_steps;
+END;
+$function$;
+
+SELECT second_star();
+
+DROP FUNCTION second_star();
 DROP TABLE day05;
