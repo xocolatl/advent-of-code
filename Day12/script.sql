@@ -22,58 +22,31 @@ loop AS (
 SELECT count(*) AS first_star
 FROM loop;
 
-/* Will have to think more about how this can be made into a plain query */
+/* With many thanks to https://github.com/zr40 for helping me get rid of the
+ * plpgsql. */
 
-CREATE OR REPLACE FUNCTION second_star()
- RETURNS integer
- LANGUAGE plpgsql
-AS $function$
-DECLARE
-    l_pipe_group integer;
-BEGIN
-    CREATE TEMPORARY TABLE input (
-        id integer,
-        pipes integer[],
-        pipe_group integer
-    ) ON COMMIT DROP;
+WITH RECURSIVE
+input AS (
+    SELECT match[1]::integer AS program,
+           string_to_array(match[2], ', ')::integer[] AS linked_to
+    FROM day12,
+         regexp_match(input, '^(\d+) <-> (.*)$') AS match
+),
+path AS (
+  SELECT program, link
+  from input,
+       unnest(linked_to) AS link
+  UNION
+  SELECT path.program, u.link
+  FROM path
+  JOIN input ON input.program = path.link
+  CROSS JOIN unnest(input.linked_to) AS u(link)
+)
+SELECT count(*) AS second_star
+FROM (
+    SELECT DISTINCT array_agg(link ORDER BY link) AS links
+    FROM path
+    GROUP BY program
+) _;
 
-    INSERT INTO input
-        SELECT match[1]::integer,
-               string_to_array(match[2], ', ')::integer[],
-               null
-        FROM day12,
-             regexp_match(input, '^(\d+) <-> (.*)$') AS match;
-
-    LOOP
-        SELECT min(id)
-        FROM input
-        WHERE pipe_group IS NULL
-        INTO l_pipe_group;
-
-        EXIT WHEN l_pipe_group IS NULL;
-
-        WITH RECURSIVE
-        loop AS (
-            SELECT id, pipes, ARRAY[id] AS seen
-            FROM input
-            WHERE id = l_pipe_group
-            UNION ALL
-            SELECT i.id, i.pipes, l.seen || i.id
-            FROM input AS i
-            JOIN loop AS l ON i.id = ANY (l.pipes)
-            WHERE i.id <> ALL (l.seen)
-        )
-        UPDATE input SET
-            pipe_group = l_pipe_group
-        FROM loop
-        WHERE input.id = loop.id;
-    END LOOP;
-
-    RETURN (SELECT count(DISTINCT pipe_group) FROM input);
-END;
-$function$;
-
-SELECT second_star();
-
-DROP FUNCTION second_star();
 DROP TABLE day12;
