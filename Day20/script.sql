@@ -29,11 +29,17 @@ input AS (
          regexp_match(input, '^p=<(-?\d+),(-?\d+),(-?\d+)>, v=<(-?\d+),(-?\d+),(-?\d+)>, a=<(-?\d+),(-?\d+),(-?\d+)>$') AS match
 ),
 loop AS (
-    SELECT 0 AS tick, rownum, px, py, pz, vx, vy, vz, ax, ay, az,
+    SELECT 0 AS tick,
+           px, py, pz,
+           vx, vy, vz,
+           ax, ay, az,
            count(*) OVER (PARTITION BY px, py, pz) AS collisions
     FROM input
     UNION ALL
-    SELECT tick+1, rownum, px+vx+ax, py+vy+ay, pz+vz+az, vx+ax, vy+ay, vz+az, ax, ay, az,
+    SELECT tick+1,
+           px+vx+ax, py+vy+ay, pz+vz+az,
+           vx+ax, vy+ay, vz+az,
+           ax, ay, az,
            count(*) OVER (PARTITION BY px+vx+ax, py+vy+ay, pz+vz+az)
     FROM loop
     WHERE collisions = 1
@@ -41,7 +47,6 @@ loop AS (
 )
 SELECT count(*) AS second_star
 FROM loop
-WHERE tick = (SELECT max(tick) FROM loop)
-GROUP BY tick;
+WHERE tick = (SELECT max(tick) FROM loop);
 
 DROP TABLE day20;
