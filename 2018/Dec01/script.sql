@@ -21,7 +21,8 @@ FROM dec01;
  */
 WITH
 sums (rownum, sum) AS (
-    SELECT rownum, sum(input) OVER (ORDER BY rownum)
+    SELECT rownum,
+           sum(input) OVER (ORDER BY rownum)
     FROM dec01
 )
 SELECT a.sum
