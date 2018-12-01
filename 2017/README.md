@@ -1,5 +1,5 @@
-This is my attempt to solve the [Advent Of Code 2018](http://adventofcode.com/2018)
-puzzles using [PostgreSQL 11](https://www.postgresql.org/). I don't plan to use
+This is my attempt to solve the [Advent Of Code 2017](http://adventofcode.com/2017)
+puzzles using [PostgreSQL 10](https://www.postgresql.org/). I don't plan to use
 any extensions except for what comes in contrib. I'm also going to try to avoid
 using plpgsql (and certainly any other pl).
 
@@ -10,7 +10,7 @@ this language.
 
 If you would like to run these yourself, save your input to a file called
 `input.txt` in the directory for the appropriate day (making sure there are no
-blank lines at the end) and run `psql -Xqf script.sql`.
+blank lines at the end) and run `psql -qf script.sql`.
 
-* http://adventofcode.com/2018 :christmas_tree:
+* http://adventofcode.com/2017 :christmas_tree:
 * https://www.postgresql.org/ :elephant:
