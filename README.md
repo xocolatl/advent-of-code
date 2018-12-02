@@ -9,8 +9,7 @@ this language.
 **Comments and improvements welcome.**
 
 If you would like to run these yourself, save your input to a file called
-`input.txt` in the directory for the appropriate day (making sure there are no
-blank lines at the end) and run `psql -Xqf script.sql`.
+`input.dat` in the directory for the appropriate day and run `psql -Xqf script.sql`.
 
 * http://adventofcode.com/2018 :christmas_tree:
 * https://www.postgresql.org/ :elephant:
