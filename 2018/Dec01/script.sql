@@ -1,5 +1,5 @@
 \set ON_ERROR_STOP true
-CREATE TABLE dec01 (rownum bigint GENERATED ALWAYS AS IDENTITY, input bigint);
+CREATE TABLE dec01 (rownum bigint GENERATED ALWAYS AS IDENTITY, input integer);
 
 /* Import the input file.  We're using perl to remove the final newline. */
 \COPY dec01 (input) FROM PROGRAM 'perl -pe ''chomp if eof'' input.dat'
