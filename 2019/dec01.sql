@@ -18,11 +18,13 @@ FROM dec01
 CROSS JOIN LATERAL (
     WITH RECURSIVE
     fuel (mass) AS (
-        SELECT greatest(dec01.mass / 3 - 2, 0)
+        SELECT dec01.mass / 3 - 2
         UNION ALL
-        SELECT greatest(fuel.mass / 3 - 2, 0)
+        SELECT fuel.mass / 3 - 2
         FROM fuel
         WHERE fuel.mass > 0
     )
-    TABLE fuel
+    SELECT mass
+    FROM fuel
+    WHERE fuel.mass > 0
 ) AS fuel;
