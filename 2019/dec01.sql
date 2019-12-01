@@ -13,18 +13,29 @@ FROM dec01;
 
 /* SECOND STAR */
 
-SELECT sum(fuel.mass) AS second_star
-FROM dec01
-CROSS JOIN LATERAL (
-    WITH RECURSIVE
-    fuel (mass) AS (
-        VALUES (dec01.mass / 3 - 2)
-        UNION ALL
-        -- 8/3-2 = 0 so we can stop recursing at 8
-        SELECT fuel.mass / 3 - 2
-        FROM fuel
-        WHERE fuel.mass > 8
-    )
-    TABLE fuel
-) AS fuel
-WHERE fuel.mass > 0;
+/*
+ * Any mass that would require negative fuel should instead be treated as if it
+ * requires zero fuel; the remaining mass, if any, is instead handled by
+ * wishing really hard, which has no mass and is outside the scope of this
+ * calculation.
+ *
+ * It turns out that this means we can discard any mass of 8 or below because
+ * 8 / 3 - 2 = 0.
+ */
+
+WITH RECURSIVE
+
+fuel (mass) AS (
+    SELECT mass / 3 - 2
+    FROM dec01
+    WHERE dec01.mass > 8
+
+    UNION ALL
+
+    SELECT fuel.mass / 3 - 2
+    FROM fuel
+    WHERE fuel.mass > 8
+)
+
+SELECT sum(mass) AS second_star
+FROM fuel;
