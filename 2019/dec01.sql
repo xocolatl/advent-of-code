@@ -24,7 +24,7 @@ CROSS JOIN LATERAL (
         FROM fuel
         WHERE fuel.mass > 0
     )
-    SELECT mass
+    SELECT fuel.mass
     FROM fuel
     WHERE fuel.mass > 0
 ) AS fuel;
