@@ -18,13 +18,13 @@ FROM dec01
 CROSS JOIN LATERAL (
     WITH RECURSIVE
     fuel (mass) AS (
-        SELECT dec01.mass / 3 - 2
+        VALUES (dec01.mass / 3 - 2)
         UNION ALL
+        -- 8/3-2 = 0 so we can stop recursing at 8
         SELECT fuel.mass / 3 - 2
         FROM fuel
-        WHERE fuel.mass > 0
+        WHERE fuel.mass > 8
     )
-    SELECT fuel.mass
-    FROM fuel
-    WHERE fuel.mass > 0
-) AS fuel;
+    TABLE fuel
+) AS fuel
+WHERE fuel.mass > 0;
