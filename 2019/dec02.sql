@@ -58,7 +58,7 @@ generator (value) AS (
     UNION ALL
     SELECT value + 1
     FROM generator
-    WHERE value <= 99
+    WHERE value < 99
 )
 SELECT 100*noun.value + verb.value AS second_star
 FROM generator AS noun
