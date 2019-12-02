@@ -50,13 +50,19 @@ WHERE state->ip = '99';
 
 /* SECOND STAR */
 
--- This just brute-forces part one over all possible nouns and verbs, with an
--- arbitrary assumption that neither of them will go over 99.  That turns out
--- to be the case, but it would be nice not to hardcode it.
+-- This just brute-forces part one over all possible nouns and verbs.
 
-SELECT 100*noun + verb AS second_star
-FROM generate_series(0, 99) AS noun
-CROSS JOIN generate_series(0, 99) AS verb
+WITH RECURSIVE
+generator (value) AS (
+    VALUES (0)
+    UNION ALL
+    SELECT value + 1
+    FROM generator
+    WHERE value <= 99
+)
+SELECT 100*noun.value + verb.value AS second_star
+FROM generator AS noun
+CROSS JOIN generator AS verb
 CROSS JOIN LATERAL (
     /* This is just part one */
     WITH RECURSIVE
@@ -64,8 +70,8 @@ CROSS JOIN LATERAL (
     machine (ip, state) AS (
         SELECT 0,
                jsonb_set(jsonb_set(to_jsonb(CAST(regexp_split_to_array(content, ',') AS integer[])),
-                                   '{1}', to_jsonb(noun)),
-                         '{2}', to_jsonb(verb))
+                                   '{1}', to_jsonb(noun.value)),
+                         '{2}', to_jsonb(verb.value))
         FROM dec02
 
         UNION ALL
