@@ -4,6 +4,7 @@ CREATE TABLE dec02 (
 );
 
 \COPY dec02 (content) FROM PROGRAM 'curl -b session.cookie https://adventofcode.com/2019/day/2/input';
+VACUUM ANALYZE dec02;
 
 /* FIRST STAR */
 
