@@ -16,13 +16,13 @@ input (planet, orbiting) AS (
     FROM dec06
 ),
 
-walker (planet, orbiting) AS (
-    SELECT planet, orbiting
+walker (orbiting) AS (
+    SELECT orbiting
     FROM input
 
     UNION ALL
 
-    SELECT i.planet, i.orbiting
+    SELECT i.orbiting
     FROM input AS i
     JOIN walker AS w ON w.orbiting = i.planet
 )
