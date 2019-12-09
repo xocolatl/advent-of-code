@@ -123,7 +123,7 @@ machine (ip, relbase, inputs, outputs, state) AS (
         FROM gen
         ORDER BY n DESC
         FETCH FIRST ROW ONLY
-        ) AS v2(extended_state)
+    ) AS v2(extended_state)
 
     WHERE state <> '"ERROR"'
       AND opcode <> 'HALT'
@@ -254,7 +254,7 @@ machine (ip, relbase, inputs, outputs, state) AS (
         FROM gen
         ORDER BY n DESC
         FETCH FIRST ROW ONLY
-        ) AS v2(extended_state)
+    ) AS v2(extended_state)
 
     WHERE state <> '"ERROR"'
       AND opcode <> 'HALT'
