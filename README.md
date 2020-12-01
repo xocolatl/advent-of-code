@@ -1,5 +1,5 @@
-This is my attempt to solve the [Advent Of Code 2019](http://adventofcode.com/2019)
-puzzles using [PostgreSQL 12](https://www.postgresql.org/). I don't plan to use
+This is my attempt to solve the [Advent Of Code 2020](http://adventofcode.com/2020)
+puzzles using [PostgreSQL 13](https://www.postgresql.org/). I don't plan to use
 any extensions except for what comes in contrib. I'm also going to try to avoid
 using plpgsql (and certainly any other pl).
 
@@ -13,5 +13,5 @@ If you would like to run these yourself, save your session cookie in a file call
 `Set-Cookie: session=1234` (where 1234 is replaced by what the site gives you after
 logging in). Then run `psql -Xqf 2019/decXX.sql`.
 
-  - <http://adventofcode.com/2019> :christmas\_tree:
+  - <http://adventofcode.com/2020> :christmas\_tree:
   - <https://www.postgresql.org/> :elephant:
