@@ -11,7 +11,7 @@ language.
 If you would like to run these yourself, save your session cookie in a file called
 `session.cookie` at the top of this repository. In it, add the line
 `Set-Cookie: session=1234` (where 1234 is replaced by what the site gives you after
-logging in). Then run `psql -Xqf 2019/decXX.sql`.
+logging in). Then run `psql -Xqf 2020/decXX.sql`.
 
   - <http://adventofcode.com/2020> :christmas\_tree:
   - <https://www.postgresql.org/> :elephant:
