@@ -1,8 +1,7 @@
 DROP TABLE IF EXISTS dec02;
 CREATE TABLE dec02 (
     line_number bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-    line text NOT NULL--,
---    min integer NOT NULL GENERATED ALWAYS AS (CAST(regexp_match(line, '^(\d+)') AS INTEGER)) STORED
+    line text NOT NULL
 );
 
 \COPY dec02 (line) FROM PROGRAM 'curl -b session.cookie https://adventofcode.com/2020/day/2/input';
