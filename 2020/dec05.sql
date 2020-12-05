@@ -11,12 +11,8 @@ VACUUM ANALYZE dec05;
 
 /* FIRST STAR */
 
-SELECT max(8*row + col)
-FROM dec05,
-     LATERAL (VALUES (
-        CAST(CAST(translate(SUBSTRING(pass FROM 1 FOR 7), 'FB', '01') AS bit(7)) AS integer),
-        CAST(CAST(translate(SUBSTRING(pass FROM 8 FOR 3), 'LR', '01') AS bit(3)) AS integer)
-     )) AS v (row, col)
+SELECT max(CAST(CAST(translate(pass, 'FBLR', '0101') AS bit(10)) AS integer))
+FROM dec05
 ;
 
 /* SECOND STAR */
@@ -26,10 +22,8 @@ FROM (
     SELECT id, lag(id) OVER w
     FROM dec05,
          LATERAL (VALUES (
-            CAST(CAST(translate(SUBSTRING(pass FROM 1 FOR 7), 'FB', '01') AS bit(7)) AS integer),
-            CAST(CAST(translate(SUBSTRING(pass FROM 8 FOR 3), 'LR', '01') AS bit(3)) AS integer)
-         )) AS v (row, col),
-         LATERAL (VALUES (8*row + col)) AS v2 (id)
+            CAST(CAST(translate(pass, 'FBLR', '0101') AS bit(10)) AS integer)
+         )) AS v (id)
     WINDOW w AS (ORDER BY id)
 ) AS _
 WHERE id <> lag+1
