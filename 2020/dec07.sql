@@ -21,19 +21,19 @@ input (parent, child) AS (
          LATERAL regexp_match(m2, '^(\d+) (.*?) bags?$') AS m3
 ),
 
-walk AS (
-    SELECT *
+walk (parent) AS (
+    SELECT parent
     FROM input
     WHERE child = 'shiny gold'
 
-    UNION ALL
+    UNION DISTINCT
 
-    SELECT i.*
+    SELECT i.parent
     FROM input AS i
     JOIN walk AS w ON w.parent = i.child
 )
 
-SELECT count(DISTINCT parent)
+SELECT count(parent)
 FROM walk
 ;
 
