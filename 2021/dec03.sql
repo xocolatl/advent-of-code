@@ -47,8 +47,8 @@ oxygen (value, bit, count) AS (
 
     UNION ALL
 
-	/*
-	 * We need to query the work table twice, but PostgreSQL does not allow
+    /*
+     * We need to query the work table twice, but PostgreSQL does not allow
      * that, so copy it to some place where we CAN query it multiple times.
      */
     (WITH oxy AS (TABLE oxygen)
