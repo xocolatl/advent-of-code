@@ -21,10 +21,10 @@ VACUUM ANALYZE dec07;
 
 WITH
 
-input (pos, ord) AS (
-    SELECT CAST(pos AS bigint), ord
+input (pos) AS (
+    SELECT CAST(pos AS integer)
     FROM dec07
-    CROSS JOIN LATERAL string_to_table(value, ',') WITH ORDINALITY AS s (pos, ord)
+    CROSS JOIN LATERAL string_to_table(value, ',') AS s (pos)
 ),
 
 target (pos) AS (
@@ -39,32 +39,30 @@ FROM input
 /* SECOND STAR */
 
 /*
- * My math skills aren't good enough to calculate the meet point so just
- * calculate ALL the meet points and pick the one that uses the least fuel.
- * Not pretty, but it works.
+ * Now the ideal meeting position is just the integral average.  We could round
+ * the avg() function, but instead we just calculate it ourselves using
+ * integral division on the sum() and count().
+ *
+ * Since the fuel consumption is adding up numbers from 1 to n, we can use the
+ * Gauss formula for that: n * (n+1) / 2
  */
 
 WITH
 
-input (pos, ord) AS (
-    SELECT CAST(pos AS bigint), ord
+input (pos) AS (
+    SELECT CAST(pos AS integer)
     FROM dec07
-    CROSS JOIN LATERAL string_to_table(value, ',') WITH ORDINALITY AS s (pos, ord)
+    CROSS JOIN LATERAL string_to_table(value, ',') AS s (pos)
 ),
 
-targets (pos) AS (
-    SELECT *
-    FROM generate_series(
-        (SELECT min(pos) FROM input),
-        (SELECT max(pos) FROM input))
+target (pos) AS (
+    SELECT sum(pos) / count(*)
+    FROM input
 )
 
 SELECT sum(distance * (distance + 1) / 2) AS second_star
-FROM input AS i
-CROSS JOIN targets AS t
-CROSS JOIN LATERAL (VALUES (abs(i.pos - t.pos))) AS v (distance)
-GROUP BY t.pos
-ORDER BY second_star
-FETCH FIRST ROW ONLY
+FROM (
+    SELECT abs(pos - (TABLE target)) AS distance
+    FROM input
+) AS _
 ;
-
