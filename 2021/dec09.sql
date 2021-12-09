@@ -100,7 +100,7 @@ largest_three (count) AS (
     FETCH FIRST 3 ROWS ONLY
 )
 
-/* A factor() aggregate would be nice here */
+/* A product() aggregate would be nice here */
 SELECT a[1] * a[2] * a[3] AS second_star
 FROM (SELECT array_agg(count) AS a FROM largest_three) AS _
 ;
