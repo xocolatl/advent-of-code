@@ -69,7 +69,7 @@ six_segments (id, segments, number) AS (
     SELECT i.id,
            i.segments,
            CASE count(*) FILTER (WHERE i.segments @> us.segments)
-               WHEN 0 THEN 6 /* Doesn't contain with anything */
+               WHEN 0 THEN 6 /* Doesn't contain anything */
                WHEN 2 THEN 0 /* Contains 1 and 7 */
                WHEN 3 THEN 9 /* Contains 1, 4, and 7 */
            END
