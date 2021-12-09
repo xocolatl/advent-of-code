@@ -111,7 +111,7 @@ digits AS (
     TABLE five_segments
 ),
 
-/* ...and use them convert the outputs */
+/* ...and use them to convert the outputs */
 results (number) AS (
     SELECT sum(d.number * power(10, o.exp))
     FROM outputs AS o
