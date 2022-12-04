@@ -58,8 +58,8 @@ pairs (assignment1, assignment2) AS (
     FROM dec04 AS d
 )
 
-SELECT assignment1 CONTAINS assignment2 OR assignment2 CONTAINS assignment1 AS first_star,
-       assignment1 OVERLAPS assignment2 AS second_star
+SELECT COUNT(*) FILTER (WHERE assignment1 CONTAINS assignment2 OR assignment2 CONTAINS assignment1) AS first_star,
+       COUNT(*) FILTER (WHERE assignment1 OVERLAPS assignment2) AS second_star
 FROM pairs
 
  *
