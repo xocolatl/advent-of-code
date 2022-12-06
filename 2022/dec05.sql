@@ -46,9 +46,9 @@ run (step, num, src, dst, stacks) AS (
 
     SELECT m.step, m.num, m.src, m.dst,
            jsonb_set(jsonb_set(r.stacks,
-                               ARRAY[(m.dst-1)::text],
+                               ARRAY[CAST(m.dst-1 AS CHARACTER VARYING)],
                                to_jsonb(reverse(SUBSTRING(r.stacks->>(m.src-1) FOR m.num)) || (r.stacks->>(m.dst-1)))),
-                     ARRAY[(m.src-1)::text],
+                     ARRAY[CAST(m.src-1 AS CHARACTER VARYING)],
                      to_jsonb(SUBSTRING(r.stacks->>(m.src-1) FROM m.num+1)))
     FROM run AS r
     JOIN moves AS m ON m.step = r.step + 1
@@ -106,9 +106,9 @@ run (step, num, src, dst, stacks) AS (
 
     SELECT m.step, m.num, m.src, m.dst,
            jsonb_set(jsonb_set(r.stacks,
-                               ARRAY[(m.dst-1)::text],
+                               ARRAY[CAST(m.dst-1 AS CHARACTER VARYING)],
                                to_jsonb(SUBSTRING(r.stacks->>(m.src-1) FOR m.num) || (r.stacks->>(m.dst-1)))),
-                     ARRAY[(m.src-1)::text],
+                     ARRAY[CAST(m.src-1 AS CHARACTER VARYING)],
                      to_jsonb(SUBSTRING(r.stacks->>(m.src-1) FROM m.num+1)))
     FROM run AS r
     JOIN moves AS m ON m.step = r.step + 1
